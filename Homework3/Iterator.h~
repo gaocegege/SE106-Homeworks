@@ -1,0 +1,75 @@
+#include "Vector.h"
+
+template <typename T>
+class Iterator
+{
+public:
+	Iterator();
+	Iterator(const Iterator& x);
+	Iterator(const Vector *vp, int index);
+	Iterator& operator++();
+	Iterator operator++(int);
+	bool operator==(const Iterator& that);
+	bool operator!=(const Iterator& that);
+	T& operator*();
+	Iterator begin();
+	Iterator end();
+private:
+	const Vector *vp;
+    int index;
+ };
+
+Iterator::Iterator() 
+{
+	this->vp = NULL;
+}
+
+Iterator::Iterator(const iterator & x) 
+{
+    this->vp = x.vp;
+    this->index = x.index;
+}
+
+Iterator::Iterator(const Vector *vp, int index)
+{
+	this->vp = vp;
+	this->index = index;
+}
+
+Iterator::Iterator& operator++()
+{
+	index++;
+	return *this;
+}
+
+Iterator::Iterator operator++(int)
+{
+	Iterator copy(*this);
+	operator++();
+	return copy;
+}
+
+bool Iterator::operator==(const Iterator& that)
+{
+	return vp == that.vp && index == that.index;
+}
+
+bool Iterator::operator!=(const Iterator& that)
+{
+	return !(*this == that);
+}
+
+T& Iterator::operator*()
+{
+	return vp->elements[index];
+}
+
+Iterator Iterator::begin() const
+{
+	return Iterator(this,0);
+}
+
+Iterator Iterator::end() const
+{
+	return Iterator(this, vp->size());
+}
